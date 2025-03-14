@@ -1323,6 +1323,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6885800901117965801, guid: 07e32efe1fb0ba94e90d64248da0fa4f, type: 3}
+      propertyPath: autoTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6885800901117965801, guid: 07e32efe1fb0ba94e90d64248da0fa4f, type: 3}
       propertyPath: projectilePrefab
       value: 
       objectReference: {fileID: 4660657585150568382}

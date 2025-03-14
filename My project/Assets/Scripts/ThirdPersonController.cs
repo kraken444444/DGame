@@ -21,8 +21,8 @@ public class ThirdPersonController : MonoBehaviour
     private Transform cameraTransform;
     private Camera playerCamera;
     
-    private float rotationX = 0f;
-    private float rotationY = 0f;
+    private float rotationX;
+    private float rotationY;
     
     private float verticalVelocity;
     private float gravity = -9.81f;

@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-
 public class WeaponManager : MonoBehaviour
 {
     [Header("Weapon Settings")]
@@ -11,9 +10,8 @@ public class WeaponManager : MonoBehaviour
     public Transform[] weaponSlots;
     
     [Header("Auto-Positioning Fallback")]
-    public float weaponOrbitHeight = 2.5f;
-    public float weaponOrbitRadius = 1.5f;
     public float rotationSpeed = 20f;
+    public float orbitRadius = 2f; // Added for auto-positioning
 
     private List<Weapon> activeWeapons = new List<Weapon>();
     private float orbitAngle = 0f;
@@ -60,12 +58,26 @@ public class WeaponManager : MonoBehaviour
                 if (weaponSlots[slotIndex] != null)
                 {
                     activeWeapons[i].transform.position = weaponSlots[slotIndex].position;
-                    activeWeapons[i].transform.rotation = weaponSlots[slotIndex].rotation;
+                    // Don't force rotation here - let the Weapon handle its own rotation for targeting
                 }
             }
         }
-        
-        
+        else
+        {
+            // Auto-position weapons in a circle if no manual slots are available
+            float angleStep = 360f / activeWeapons.Count;
+            
+            for (int i = 0; i < activeWeapons.Count; i++)
+            {
+                float angle = orbitAngle + i * angleStep;
+                float x = transform.position.x + orbitRadius * Mathf.Cos(angle * Mathf.Deg2Rad);
+                float z = transform.position.z + orbitRadius * Mathf.Sin(angle * Mathf.Deg2Rad);
+                
+                Vector3 newPos = new Vector3(x, transform.position.y, z);
+                activeWeapons[i].transform.position = newPos;
+                // Again, don't set rotation - let the Weapon handle it
+            }
+        }
     }
 
     public void AddWeapon(GameObject weaponPrefab)
@@ -81,7 +93,12 @@ public class WeaponManager : MonoBehaviour
         
         if (weapon != null)
         {
+            // Make sure auto-targeting is enabled
+            weapon.autoTarget = true;
+            
+            // Initialize the weapon with this transform so it knows the player position
             weapon.Initialize(transform);
+            
             activeWeapons.Add(weapon);
             UpdateWeaponPositions();
         }
@@ -97,8 +114,6 @@ public class WeaponManager : MonoBehaviour
         }
     }
 }
-
-
 
 
 

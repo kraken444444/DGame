@@ -2,9 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
@@ -17,7 +14,7 @@ public class Weapon : MonoBehaviour
     
     [Header("Targeting")]
     public bool autoTarget = true;
-    public float targetingSpeed = 5f; // How quickly the weapon rotates to target
+    public float targetingSpeed = 5f; 
     public float targetingUpdateRate = 0.2f; 
     public string enemyTag = "Enemy"; 
     
@@ -62,7 +59,6 @@ public class Weapon : MonoBehaviour
             transform.Rotate(Vector3.forward, idleRotationSpeed * Time.deltaTime);
         }
         
-        // Attack timer
         attackTimer -= Time.deltaTime;
         if (attackTimer <= 0)
         {
@@ -183,9 +179,26 @@ public class Weapon : MonoBehaviour
             }
         }
     }
-
+    
     IEnumerator ShowAttackEffect(Vector3 targetPosition)
     {
-        yield return new WaitForSeconds(0.1f);
+        GameObject attackLine = new GameObject("AttackLine");
+        LineRenderer lineRenderer = attackLine.AddComponent<LineRenderer>();
+        
+        lineRenderer.startWidth = 0.1f;
+        lineRenderer.endWidth = 0.1f;
+        lineRenderer.positionCount = 2;
+        lineRenderer.SetPosition(0, transform.position);
+        lineRenderer.SetPosition(1, targetPosition);
+        
+        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        
+        lineRenderer.startColor = Random.ColorHSV(0f, 1f, 0.5f, 1f, 0.5f, 1f);
+        lineRenderer.endColor = lineRenderer.startColor;
+        
+        float duration = 0.1f;
+        yield return new WaitForSeconds(duration);
+        
+        Destroy(attackLine);
     }
 }
