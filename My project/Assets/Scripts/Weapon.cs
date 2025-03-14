@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+
 public class Weapon : MonoBehaviour
 {
     [Header("Weapon Settings")]
@@ -51,12 +52,14 @@ public class Weapon : MonoBehaviour
             }
             else if (rotateWeaponWhenIdle)
             {
-                transform.Rotate(Vector3.forward, idleRotationSpeed * Time.deltaTime);
+                Vector3 randomRotation = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+                transform.Rotate(randomRotation, idleRotationSpeed * Time.deltaTime);
             }
         }
         else if (rotateWeaponWhenIdle)
         {
-            transform.Rotate(Vector3.forward, idleRotationSpeed * Time.deltaTime);
+            Vector3 randomRotation = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+            transform.Rotate(randomRotation, idleRotationSpeed * Time.deltaTime);
         }
         
         attackTimer -= Time.deltaTime;
