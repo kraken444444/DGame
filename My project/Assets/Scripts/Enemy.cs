@@ -14,8 +14,6 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
-        
-        // Optional: Visual feedback when taking damage
         StartCoroutine(FlashColor());
         
         if (currentHealth <= 0)
@@ -26,7 +24,6 @@ public class Enemy : MonoBehaviour
     
     IEnumerator FlashColor()
     {
-        // Get renderer
         Renderer renderer = GetComponent<Renderer>();
         if (renderer != null)
         {
@@ -34,10 +31,6 @@ public class Enemy : MonoBehaviour
             renderer.material.color = Color.red;
             yield return new WaitForSeconds(0.1f);
             renderer.material.color = originalColor;
-        }
-        else
-        {
-            yield return null;
         }
     }
     

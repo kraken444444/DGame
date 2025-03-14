@@ -126,5 +126,9 @@ MonoBehaviour:
   attackRate: 1
   attackRange: 10
   projectilePrefab: {fileID: 4841545767067191691, guid: e5f6069c7320e874e9d08bc69727068a, type: 3}
-  rotateWeapon: 1
-  rotationSpeed: 90
+  autoTarget: 1
+  targetingSpeed: 5
+  targetingUpdateRate: 1
+  enemyTag: Enemy
+  rotateWeaponWhenIdle: 1
+  idleRotationSpeed: 90

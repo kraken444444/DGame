@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.92652893, y: 1.7154975, z: 7.26}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_LocalScale: {x: 0.6, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -125,6 +125,10 @@ MonoBehaviour:
   damage: 20
   attackRate: 1
   attackRange: 10
-  projectilePrefab: {fileID: 5417016111639572945, guid: e5f6069c7320e874e9d08bc69727068a, type: 3}
-  rotateWeapon: 1
-  rotationSpeed: 90
+  projectilePrefab: {fileID: 4841545767067191691, guid: e5f6069c7320e874e9d08bc69727068a, type: 3}
+  autoTarget: 1
+  targetingSpeed: 5
+  targetingUpdateRate: 0.2
+  enemyTag: Enemy
+  rotateWeaponWhenIdle: 1
+  idleRotationSpeed: 90

@@ -13,19 +13,17 @@ public class WeaponProjectile : MonoBehaviour
     {
         target = enemyTarget;
         damage = weaponDamage;
-        Destroy(gameObject, lifetime); // Self-destruct after lifetime
+        Destroy(gameObject, lifetime); //die :)
     }
 
     void Update()
     {
         if (target == null)
         {
-            // Target was destroyed, destroy projectile
             Destroy(gameObject);
             return;
         }
-
-        // Move towards target
+        
         Vector3 direction = (target.position - transform.position).normalized;
 
         if (homing)
@@ -35,12 +33,10 @@ public class WeaponProjectile : MonoBehaviour
         }
         else
         {
-            // Direct movement
             transform.position += direction * speed * Time.deltaTime;
             transform.forward = direction;
         }
-
-        // Check if we hit the target
+        
         float distanceToTarget = Vector3.Distance(transform.position, target.position);
         if (distanceToTarget < 0.5f)
         {
@@ -50,8 +46,7 @@ public class WeaponProjectile : MonoBehaviour
             {
                 enemy.TakeDamage(damage);
             }
-
-            // Destroy projectile
+            
             Destroy(gameObject);
         }
     }

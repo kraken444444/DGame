@@ -21,20 +21,15 @@ public class ThirdPersonController : MonoBehaviour
     private Transform cameraTransform;
     private Camera playerCamera;
     
-    // Camera control
     private float rotationX = 0f;
     private float rotationY = 0f;
     
-    // Movement variables
     private float verticalVelocity;
     private float gravity = -9.81f;
     
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
-        
-        // Create camera rig
-        GameObject cameraRig = new GameObject("CameraRig");
         cameraTarget = new GameObject("CameraTarget").transform;
         cameraTarget.parent = transform;
         cameraTarget.localPosition = new Vector3(0, cameraHeight, 0);
@@ -51,11 +46,8 @@ public class ThirdPersonController : MonoBehaviour
         }
         
         cameraTransform = playerCamera.transform;
-        
-        // Initial position behind player
         rotationY = transform.eulerAngles.y;
         
-        // Lock and hide cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -69,36 +61,29 @@ public class ThirdPersonController : MonoBehaviour
     
     private void HandleCameraRotation()
     {
-        // Mouse input for camera rotation
         float mouseX = Input.GetAxis("Mouse X") * cameraSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * cameraSensitivity;
         
-        // Adjust rotation based on mouse movement
         rotationY += mouseX;
         rotationX -= mouseY;
         
-        // Clamp vertical rotation
         rotationX = Mathf.Clamp(rotationX, minVerticalAngle, maxVerticalAngle);
     }
     
     private void HandleMovement()
     {
-        // Get input for movement
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
         
-        // Calculate movement direction relative to camera
         Vector3 forward = Quaternion.Euler(0, rotationY, 0) * Vector3.forward;
         Vector3 right = Quaternion.Euler(0, rotationY, 0) * Vector3.right;
         Vector3 moveDirection = (forward * vertical + right * horizontal).normalized;
         
-        // Apply movement speed
         float currentSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : moveSpeed;
         
-        // Handle gravity and jumping
         if (characterController.isGrounded)
         {
-            verticalVelocity = -0.5f; // Small downward force when grounded
+            verticalVelocity = -0.5f; 
             
             if (Input.GetButtonDown("Jump"))
             {
@@ -110,15 +95,12 @@ public class ThirdPersonController : MonoBehaviour
             verticalVelocity += gravity * Time.deltaTime;
         }
         
-        // Apply movement
         Vector3 movement = moveDirection * currentSpeed;
         movement.y = verticalVelocity;
         characterController.Move(movement * Time.deltaTime);
         
-        // Only rotate character when actually moving
         if (moveDirection.magnitude > 0.1f)
         {
-            // Smoothly rotate character to face movement direction
             Quaternion targetRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 0, moveDirection.z));
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
@@ -126,25 +108,17 @@ public class ThirdPersonController : MonoBehaviour
     
     private void UpdateCameraPosition()
     {
-        // Update camera target position
         cameraTarget.localPosition = new Vector3(0, cameraHeight, 0);
-        
-        // Calculate desired camera position
         Vector3 targetPosition = cameraTarget.position;
         Quaternion rotation = Quaternion.Euler(rotationX, rotationY, 0);
-        Vector3 offset = rotation * new Vector3(0.5f, 0, -cameraDistance); // Slight offset for over-the-shoulder
-        
-        // Set camera position and rotation
+        Vector3 offset = rotation * new Vector3(0.5f, 0, -cameraDistance); // slight offset for over the shoulder
         cameraTransform.position = targetPosition + offset;
         cameraTransform.rotation = rotation;
-        
-        // Add a slight look-at effect for better over-the-shoulder
         cameraTransform.LookAt(cameraTarget.position + new Vector3(0, 0.2f, 0));
     }
     
     private void OnDestroy()
     {
-        // Reset cursor when script is destroyed
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
